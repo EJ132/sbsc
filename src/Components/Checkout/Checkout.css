@@ -1,0 +1,35 @@
+.checkout-container {
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
+.active {
+  font-weight: 500 !important;
+  /* text-decoration: underline; */
+  margin-top: -5px;
+}
+
+.nonActive {
+  font-size: 1.25rem !important;
+}
+
+.checkout-title {
+  font-weight: 300;
+  font-size: 1.75rem;
+}
+
+.circle-seperator {
+  /* margin-top: 0.5em; */
+}
+
+.form-label {
+  font-weight: 200;
+}
+
+#checkout-items {
+    height: 70%;
+}
+
+#checkout-total {
+    height: 20%;
+}

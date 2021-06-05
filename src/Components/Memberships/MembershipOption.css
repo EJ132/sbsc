@@ -1,0 +1,20 @@
+.price-table {
+  min-height: 400px;
+  height: 100%;
+}
+
+.btn-warning {
+  background-color: rgb(190 142 4);
+}
+
+.price-header {
+  font-size: 6rem;
+}
+
+.dollar-sign {
+  font-size: 1.75rem;
+}
+
+.taxes {
+  font-size: 0.75rem;
+}

@@ -1,0 +1,58 @@
+.service-img {
+  height: 300px;
+  object-fit: cover;
+}
+
+.more-option-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.service-header {
+  border-bottom: 1px solid gold;
+}
+
+.main-service-img {
+  max-height: 35vh;
+  width: 100%;
+  object-fit: cover;
+  object-position: 0 30%;
+}
+
+@media screen and (min-width: 769px){
+  .main-service-img {
+    max-height: 35vh;
+    width: 50vw;
+  }
+}
+
+.service-h1 {
+  color: rgb(214, 214, 214);
+  font-size: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.service-desc-h5 {
+  font-size: clamp(0.75rem, 1.5vw, 1.25rem);
+  line-height: 2rem;
+}
+
+.service-option:hover {
+  cursor: pointer;
+  background-color: rgba(199, 199, 199, 0.1);
+}
+
+.pt {
+  object-position: 0% 0%;
+}
+
+.one-on-one {
+  object-position: 0% 30%;
+}
+
+.more-options {
+  margin-top: 10vh;
+}
+
+.more-options-header {
+  border-bottom: 1px solid gold;
+}

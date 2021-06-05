@@ -1,0 +1,16 @@
+.itemImg {
+  width: 350px;
+  height: 500px;
+}
+
+.quantityBox {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border: 1px solid grey;
+}
+
+.quantityBox div {
+  width: 33%;
+}

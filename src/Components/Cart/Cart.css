@@ -1,0 +1,10 @@
+.cart-image {
+    height: 100px; 
+    width: 200px;
+    object-fit: contain;
+    object-position: 0px 0%;
+}
+
+.remove, .quantity, .amount {
+    text-align: left;
+}
