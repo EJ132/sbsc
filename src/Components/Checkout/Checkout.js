@@ -17,7 +17,7 @@ export default class Checkout extends Component {
         validated: false,
         personal_information: [],
         shippingOption: "",
-        checkout_step: 0,
+        checkout_step: 999,
     }
 
     async componentDidMount() {
@@ -26,7 +26,8 @@ export default class Checkout extends Component {
             this.setState({
                 current_cart: cart_items.orderInfo.lineItems,
                 order_details: cart_items,
-                totalAmount: cart_items.orderInfo
+                totalAmount: cart_items.orderInfo,
+                checkout_step: 0,
             })
             console.log(this.state)
         } else {
@@ -41,12 +42,16 @@ export default class Checkout extends Component {
     }
 
     getCurrentStep = () => {
+
+        if(this.state.checkout_step === 999) {
+            return
+        }
+
+        console.log(this.state)
         if(this.state.checkout_step === 0) {
-            return <Checkout_Details updateCheckout={this.updateCheckoutStep} totalAmount={this.state.order_details.orderInfo ? ((this.state.order_details.orderInfo.totalMoney.amount + 4.50) + (this.state.order_details.orderInfo.totalMoney.amount * 0.085)).toFixed(2) : null} />
-        } else if(this.state.checkout_step === 1) {
-            return <Checkout_Billing updateCheckout={this.updateCheckoutStep} />
-        } else {
-            return <Checkout_Payment totalAmount={this.state.order_details.orderInfo ? ((this.state.order_details.orderInfo.totalMoney.amount + 4.00)).toFixed(2) : null} />
+            return <Checkout_Details orderId={this.state.order_details.orderInfo.id} updateCheckout={this.updateCheckoutStep} totalAmount={this.state.order_details.orderInfo ? ((this.state.order_details.orderInfo.totalMoney.amount + 4.50) + (this.state.order_details.orderInfo.totalMoney.amount * 0.085)).toFixed(2) : null} />
+        } else {   
+            return <Checkout_Payment totalAmount={this.state.order_details.orderInfo ? (this.state.order_details.orderInfo.totalMoney.amount).toFixed(2) : null} />
         }
     }
 
@@ -78,7 +83,7 @@ export default class Checkout extends Component {
                                     <Col>
                                         <Row>
                                             <Col>
-                                                <h1 className="text-left h2">{product.name}</h1>
+                                                <h1 className="text-left h2">{product.name} - {product.variationName}</h1>
                                             </Col>
                                             <Col xs={12} lg={4}>
                                                 <h1 className="h4 quantity text-right pr-2" >Quantity: 1</h1>
@@ -102,20 +107,20 @@ export default class Checkout extends Component {
                                     <h1 className="h5 text-left">{`$${this.state.order_details === "" ? null : (this.state.order_details.orderInfo.totalMoney.amount - this.state.order_details.orderInfo.totalTaxMoney.amount).toFixed(2) }`}</h1>
                                 </Col>
                             </Row>
-                            <Row>
+                            {/* <Row>
                                 <Col md={8} lg={9}>
                                     <h1 className="h5 text-right">Shipping</h1>
                                 </Col>
                                 <Col>
                                     <h1 className="h5 text-left">{`$${this.state.order_details === "" ? 0 : 4.00.toFixed(2)}`}</h1>
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Row>
                                 <Col md={8} lg={9}>
                                     <h1 className="h5 text-right">Tax</h1>
                                 </Col>
                                 <Col>
-                                    <h1 className="h5 text-left">{`$${this.state.order_details === "" ? null : (this.state.order_details.orderInfo.totalTaxMoney.amount).toFixed(2) }`}</h1>
+                                    <h1 className="h5 text-left">{`$${this.state.order_details === "" ? null : (this.state.order_details.orderInfo.taxes[0].appliedMoney.amount).toFixed(2) }`}</h1>
                                 </Col>
                             </Row>
                             <Row>
@@ -123,7 +128,7 @@ export default class Checkout extends Component {
                                     <h1 className="h5 text-right">Total</h1>
                                 </Col>
                                 <Col>
-                                <h1 className="h5 text-left">{`$${this.state.order_details === "" ? null : ((this.state.order_details.orderInfo.totalMoney.amount + 4.00)).toFixed(2) }`}</h1>
+                                <h1 className="h5 text-left">{`$${this.state.order_details === "" ? null : (this.state.order_details.orderInfo.totalMoney.amount).toFixed(2) }`}</h1>
                                 </Col>
                             </Row>
                             </Container>

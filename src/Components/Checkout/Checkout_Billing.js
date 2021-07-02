@@ -123,26 +123,6 @@ export default class Checkout_Billing extends Component {
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
                     </Form.Row>
-                    <Form.Row>
-                        <Form.Group as={Col} className="text-left" md="6" controlId="validationCustom05">
-                            <Form.Label className="form-label">Phone</Form.Label>
-                            <Form.Control
-                                required
-                                type="text"
-                                placeholder="Phone"
-                            />
-                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group as={Col} className="text-left" md="6" controlId="validationCustom05">
-                            <Form.Label className="form-label">Email</Form.Label>
-                            <Form.Control
-                                required
-                                type="text"
-                                placeholder="Email"
-                            />
-                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                        </Form.Group>
-                    </Form.Row>
                     <Row className="py-2">
                         <Col className="text-right">
                             <Button type="submit" variant="outline-light">Next</Button>

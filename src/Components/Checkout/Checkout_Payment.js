@@ -10,9 +10,8 @@ export default class Checkout_Payment extends Component {
                 <Row className="my-3">
                     <Col><h1 className="text-center checkout-title nonActive">1. Shipping</h1></Col>
                     {/* <Col xs={1} md={1} lg={1} className="circle-seperator">{String.fromCharCode(9675)}</Col> */}
-                    <Col><h1 className="text-center checkout-title nonActive">2. Billing</h1></Col>
                     {/* <Col xs={1} md={1} lg={1} className="circle-seperator">{String.fromCharCode(9675)}</Col> */}
-                    <Col><h1 className="text-center checkout-title active">3. Payment</h1></Col>
+                    <Col><h1 className="text-center checkout-title active">2. Payment</h1></Col>
                 </Row>
                 <Row>
                     <Square paymentForm={ window.SqPaymentForm } totalAmount={this.props.totalAmount}/>

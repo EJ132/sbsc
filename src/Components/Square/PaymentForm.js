@@ -13,7 +13,8 @@ const config = {
         lineHeight: '24px',
         padding: '16px',
         placeholderColor: '#a0a0a0',
-        backgroundColor: 'transparent',
+        backgroundColor: 'black',
+        color: '#fff',
     }],
     // Initialize the credit card placeholders
     cardNumber: {
@@ -72,13 +73,13 @@ const config = {
             })
             .then(data => {
               console.log(JSON.parse(data));
-              alert('Payment complete successfully!\nCheck browser developer console form more details');
+              // alert('Payment complete successfully!\nCheck browser developer console form more details');
               ShopHelper.clearCart();
-              window.location.pathname = '/shop'
+              window.location.pathname = `/success/${JSON.parse(data).payment.id}`
             })
             .catch(err => {
               console.error(err);
-              alert('Payment failed to complete!\nCheck browser developer console form more details');
+              alert('Payment failed to complete! Please try again.');
             });
         }
       }

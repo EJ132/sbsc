@@ -23,7 +23,7 @@ export default class MeetPrep extends Component {
                     <Col>
                         <h1 className="h1 service-header text-left">Meet Prep</h1>
                         <h1 className="service-desc-h5 text-left">Go through prep with an experienced coach who knows how to make your meet day a success. For only $250, you get 8 weeks of custom linear or conjugate meet prep. This includes meet day prescription, openers, warm-ups, and pre-meet day consult. You also will get 1-1 communication and video analysis with Dr. Ash.</h1>
-                        <Button variant="outline-warning py-2 px-3 my-3">Sign Up Now</Button>
+                        <Button variant="outline-warning py-2 px-3 my-3" href={"https://app.acuityscheduling.com/catalog.php?owner=20933683&action=addCart&clear=1&id=1027018"}>Sign Up Now</Button>
                     </Col>
                 </Row>
 

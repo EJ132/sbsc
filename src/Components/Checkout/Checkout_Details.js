@@ -1,42 +1,63 @@
 import react, { Component } from 'react'
 import {Container, Row, Col, Image, Button, Form, ToggleButton} from 'react-bootstrap'
 import Square from '../../Components/Square/Square';
+import ShopHelper from '../../Helpers/shopHelper';
 
 export default class Checkout_Details extends Component {
 
     state = {
         validated: false,
         personal_information: [],
-        shippingOption: "",
+        shippingOption: "Shipping",
+        validatedAddressError: false,
     }
 
-    handleSubmit = (event) => {
+    componentDidMount() {
+        console.log(this.props)
+        document.getElementById(`inline-Local Pickup`).checked = false;
+        document.getElementById(`inline-Shipping`).checked = true;
+    }
+
+    showValidateAddressError = () => {
+        this.setState({
+            validatedAddressError: true
+        })
+        setTimeout(() => {
+            this.setState({
+                validatedAddressError: false
+            })
+        }, 5000)
+    }
+
+    handleSubmit = async (event) => {
         const form = event.currentTarget
+        event.preventDefault();
 
         let personalInformation = []
         for(let i = 0; i < event.currentTarget.length - 1; i++){
-            let keyPair = {[event.currentTarget[i].placeholder]: event.currentTarget[i].value}
+            let keyPair = {[event.currentTarget[i].name]: event.currentTarget[i].value}
             personalInformation.push(keyPair)
         }
 
+        console.log(personalInformation)
+
         if (form.checkValidity() === false) {
-            event.preventDefault();
+            this.showValidateAddressError();
             event.stopPropagation();
         } else {
-            this.updateCheckoutState()
+            await ShopHelper.verifyAddress(personalInformation).then((res) => {
+                if(res === false){
+                    this.showValidateAddressError();
+                } else {
+                    ShopHelper.setOrderAddress(this.props.orderId, personalInformation)
+                    this.updateCheckoutState()
+                }
+            })
         }
-
-        this.setState({
-            validated: true,
-            personal_information: [...personalInformation]
-        }, () => { 
-            console.log(this.state.personal_information);
-        })
         
     }
 
     updateCheckoutState = () => {
-        
         this.props.updateCheckout(1)
     }
 
@@ -60,9 +81,8 @@ export default class Checkout_Details extends Component {
         return(
             <Container>
                 <Row className="my-3">
-                    <Col><h1 className="text-center checkout-title active">1. Shipping</h1></Col>
-                    <Col><h1 className="text-center checkout-title nonActive">2. Billing</h1></Col>
-                    <Col><h1 className="text-center checkout-title nonActive">3. Payment</h1></Col>
+                    <Col><h1 className="text-center checkout-title active">1. Information</h1></Col>
+                    <Col><h1 className="text-center checkout-title nonActive">2. Payment</h1></Col>
                 </Row>
                 <Form>
                     <div key={`inline-checkbox`} className="mb-3">
@@ -71,19 +91,23 @@ export default class Checkout_Details extends Component {
                         ))}
                     </div>
                 </Form>
+                {this.state.shippingOption === "Local Pickup" ? 
                 <Row>
-                    <Col className="text-center">
-                        <h1 className="h5">If no shipping option is chosen defaults to shipping.</h1>
-                    </Col>
-                </Row>
+                    <Col><h1 className="text-center">Please proceed.</h1></Col>
+                    <Col xs={12} lg={12} className="text-right">
+                        <Button type="button" onClick={() => this.props.updateCheckout(2)} variant="outline-light">Next</Button>
+                    </Col> 
+                </Row> 
+                :
                 <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit}>
                     <Form.Row>
                         <Form.Group as={Col} md="6" className="text-left" controlId="validationCustom01">
                             <Form.Label className="form-label">First name</Form.Label>
                             <Form.Control
                                 required
-                                type="text"
+                                type="firstName"
                                 placeholder="First name"
+                                name="firstName"
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -91,8 +115,9 @@ export default class Checkout_Details extends Component {
                             <Form.Label className="form-label">Last name</Form.Label>
                             <Form.Control
                                 required
-                                type="text"
+                                type="lastName"
                                 placeholder="Last name"
+                                name="lastName"
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -102,8 +127,9 @@ export default class Checkout_Details extends Component {
                             <Form.Label className="form-label">Address</Form.Label>
                             <Form.Control
                                 required
-                                type="text"
+                                type="address"
                                 placeholder="Address"
+                                name="addressLine1"
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -113,8 +139,9 @@ export default class Checkout_Details extends Component {
                             <Form.Label className="form-label">City</Form.Label>
                             <Form.Control
                                 required
-                                type="text"
+                                type="city"
                                 placeholder="City"
+                                name="city"
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -124,8 +151,11 @@ export default class Checkout_Details extends Component {
                             <Form.Label className="form-label">State</Form.Label>
                             <Form.Control
                                 required
-                                type="text"
+                                type="state"
                                 placeholder="State"
+                                name="state"
+                                minLength="2"
+                                maxLength="2"
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
@@ -135,16 +165,52 @@ export default class Checkout_Details extends Component {
                                 required
                                 type="text"
                                 placeholder="Zipcode"
+                                name="zip"
+                                minLength="5"
+                                maxLength="5"
+                                autoComplete="new-password"
                             />
                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                         </Form.Group>
                     </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col} className="text-left" md="6" controlId="validationCustom05">
+                            <Form.Label className="form-label">Phone</Form.Label>
+                            <Form.Control
+                                required
+                                type="phone"
+                                placeholder="Phone"
+                                name="phoneNumber"
+                                minLength="10"
+                                maxLength="10"
+                            />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group as={Col} className="text-left" md="6" controlId="validationCustom05">
+                            <Form.Label className="form-label">Email</Form.Label>
+                            <Form.Control
+                                required
+                                type="email"
+                                placeholder="Email"
+                                name="emailAddress"
+                            />
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                    </Form.Row>
+                    {this.state.validatedAddressError ? 
+                    <Row>
+                        <Col>
+                            <h1 className="h4 text-center" style={{color: 'red'}}>Please enter a valid address</h1>
+                        </Col>
+                    </Row>
+                    : null}
                     <Row className="py-2">
                         <Col className="text-right">
                             <Button type="submit" variant="outline-light">Next</Button>
                         </Col> 
                     </Row>
                 </Form>
+                }
             </Container>
         )
     }

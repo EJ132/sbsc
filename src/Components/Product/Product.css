@@ -1,6 +1,12 @@
-.itemImg {
+.productImg {
   width: 350px;
   height: 500px;
+}
+
+.product-extra-image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
 }
 
 .quantityBox {
@@ -13,4 +19,33 @@
 
 .quantityBox div {
   width: 33%;
+}
+
+.divider {
+  border-top: 1px solid grey;
+}
+
+.item-hover:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.quantityAdd:hover, .quantitySub:hover {
+  cursor: pointer;
+  color: #D39E00;
+}
+
+.variationOption {
+  border: 1px solid grey;
+  padding: 10px 5px 5px 5px;
+  border-radius: 5px;
+  margin: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.variationOption:hover, .variationActive {
+  border-color: #D39E00;
+  color: #D39E00;
+  cursor: pointer;
 }

@@ -67,10 +67,53 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res;
     },
+    setOrderAddress: async function(orderId, data) {
+        let res = await axios({
+            method: 'POST',
+            validateStatus: (status) => {
+                return true; // I'm always returning true, you may want to do it depending on the status received
+            },
+            url: 'http://localhost:3001/cart/update-order-shipping-information',
+            data: {
+                orderId,
+                shippingDetails: data
+            }
+        }).then((response) => {
+            console.log(response)
+            return response
+        }).catch(err => console.log(err))
+        return res;
+    },
+    retrieveOrder: async function(paymentId) {
+        let res = await axios({
+            method: 'POST',
+            url: 'http://localhost:3001/payment/retrieve-payment',
+            data: {
+                paymentId: paymentId
+            }
+        }).then((response) => {
+            console.log(response)
+            return response
+        }).catch(err => console.log(err))
+        return res
+    },
+    verifyAddress: async function(addressDetails) {
+        let res = await axios({
+            method: 'POST',
+            url: 'http://localhost:3001/checkout/verify-address',
+            data: {
+                addressDetails: addressDetails
+            }
+        }).then((response) => {
+            console.log(response)
+            return response.data.data
+        }).catch(err => console.log(err))
+        return res
+    },
     clearCart: function(){
         localStorage.removeItem('checkout-id')
         console.log('Cart Cleared!')
-    }
+    },
 }
 
 export default ShopHelper;

@@ -17,7 +17,7 @@ export default class Cart extends Component {
     async componentDidMount(){
         let cart_items = await ShopHelper.getCart();
         console.log(cart_items)
-        if(cart_items.length !== 0){
+        if(cart_items && cart_items.orderInfo && cart_items.orderInfo.lineItems){
             this.setState({
                 current_cart: cart_items.orderInfo.lineItems,
                 order_details: cart_items
@@ -35,6 +35,25 @@ export default class Cart extends Component {
     navigateTo = (path) => {
         // console.log(window.location.pathname)
         window.location.pathname = path
+    }
+
+    removeItem = (itemId, orderId) => {
+        console.log(orderId)
+        axios({
+            method: 'POST',
+            url: 'http://localhost:3001/cart/update-order-remove-item',
+            data: {
+                itemUid: itemId,
+                orderId
+            }
+        }).then((response) => {
+            console.log(response)
+            this.setState({
+                current_cart: response.data.updatedOrder.order.lineItems ? response.data.updatedOrder.order.lineItems : []
+            });
+            localStorage.setItem("checkout-version", response.data.updatedOrder.order.version.toString())
+
+        }).catch(err => console.log(err))
     }
     
     render(){
@@ -55,10 +74,10 @@ export default class Cart extends Component {
                         <Col>
                             <Row>
                                 <Col xs={12} md={6} lg={6}>
-                                    <h1 className="text-left h2">{product.name}</h1>
+                                    <h1 className="text-left h2">{product.name} - {product.variationName}</h1>
                                 </Col>
                                 <Col xs={12} md={2} lg={2}>
-                                    <h1 className="h4 remove" >Remove</h1>
+                                    <h1 className="h4 remove" onClick={() => {this.removeItem(product.uid, this.state.order_details.orderInfo.id)}}>Remove</h1>
                                 </Col>  
                                 <Col xs={12} md={2} lg={2}>
                                     <h1 className="h4 quantity" >Quantity: 1</h1>
@@ -71,7 +90,7 @@ export default class Cart extends Component {
                         </Col>
                     </Row>
                 )}
-                <Row className="mt-5">
+                {/* <Row className="mt-5">
                     <Col lg={4}></Col>
                     <Col lg={4}>
                         <h1 className="h3 text-center">Cart Total</h1>
@@ -96,7 +115,7 @@ export default class Cart extends Component {
                                 <h1 className="h4 text-right">Tax</h1>
                             </Col>
                             <Col>
-                                <h1 className="h4 text-left">{`$${this.state.order_details === "" ? 0 : (this.state.order_details.orderInfo.totalTaxMoney.amount).toFixed(2) }`}</h1>
+                                <h1 className="h4 text-left">{`$${this.state.order_details === "" ? 0 : (this.state.order_details.orderInfo.taxes[0].appliedMoney.amount).toFixed(2) }`}</h1>
                             </Col>
                         </Row>
                         <Row>
@@ -109,7 +128,7 @@ export default class Cart extends Component {
                         </Row>
                     </Col>
                     <Col lg={4}></Col>
-                </Row>
+                </Row> */}
                 <Row className="mt-3">
                     <Col>
                         <Button variant="outline-danger mx-1" onClick={() => this.clearCart()}>Clear Cart</Button>

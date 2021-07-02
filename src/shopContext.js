@@ -5,25 +5,21 @@ const ShopContext = React.createContext();
 
 class ShopProvider extends Component {
 
-  constructor(props) {
-    super(props);
+  state = {
+    products: [],
+    product: {},
+    checkout: {},
+    cart: [],
+    isCartOpen: false,
+  };
 
-    this.state = {
-      products: [],
-      product: {},
-      checkout: {},
-      cart: [],
-      isCartOpen: false,
-    };
-  }  
-
-  componentDidMount() {
+  async componentDidMount() {
     if (localStorage.cart) {
       this.setCart()
     } else {
       localStorage.setItem("cart", [])
     }
-    this.getAllProducts();
+    await this.requestAllProducts();
   }
 
   setCart = () => {
@@ -33,15 +29,20 @@ class ShopProvider extends Component {
     })
   }
 
-  getAllProducts = () => {
-    axios({
+  requestAllProducts = async () => {
+    await axios({
       method: 'GET',
       url: 'http://localhost:3001'
     }).then((response) => {
+      let items = response.data.items
       this.setState({
-        products: response.data.items
+        products: items
       })
     }).catch(err => console.log(err))
+  }
+
+  getAllProducts = () => {
+    return this.state.products
   }
 
   addItemToCart = (item_id, order_id, version) => {
@@ -49,7 +50,6 @@ class ShopProvider extends Component {
         method: 'POST',
         url: 'http://localhost:3001/cart/update-order-add-item',
         data: {
-            locationId: "LZPBX0EZB9PAV",
             orderId: order_id,
             version: version.toString(),
             itemVarId: item_id,

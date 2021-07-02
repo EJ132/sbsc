@@ -4,7 +4,7 @@ import axios from 'axios'
 import {ShopContext} from '../../shopContext'
 import ShopHelper from '../../Helpers/shopHelper'
 
-export default class Shop extends Component {
+export default class ShopSandbox extends Component {
 
     static contextType = ShopContext;
 
@@ -15,9 +15,8 @@ export default class Shop extends Component {
     }
 
     async componentDidMount(){
-        const context = this.context.getAllProducts();
         let products = await ShopHelper.getAllProducts();
-        console.log(products);
+        // console.log(products);
         this.setState({
             products: products
         })
@@ -94,13 +93,13 @@ export default class Shop extends Component {
                     <Col></Col>
                 </Row>
                 <Row xs={1} md={2} lg={4} className="pt-3">
-                    {this.state.products.map((product) => 
+                    {this.state.products && this.state.products.length > 1 ? this.state.products.map((product) => 
                         <Col xs={12} md={6} lg={4} key={product.catalogItemObj.id} className="my-3">
                             <Image src={product.catalogImageObj.imageData.url} style={{objectFit: 'cover'}} width="350" height="350" />
                             <h1 className="h2 text-left">{product.catalogItemObj.itemData.name}</h1>
                             <Button variant="outline-warning" id={product.catalogItemObj.itemData.variations[0].id} onClick={() => this.addItemToCart(product.catalogItemObj.itemData.variations[0].id)}>Add to Cart</Button>
                         </Col>
-                    )}
+                    ) : null}
                 </Row>
             </Container>
         )

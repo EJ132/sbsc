@@ -8,3 +8,8 @@
 .remove, .quantity, .amount {
     text-align: left;
 }
+
+.remove:hover {
+    cursor: pointer;
+    font-weight: bold;
+}

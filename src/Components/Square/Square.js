@@ -1,11 +1,12 @@
 import React from 'react';
 import config from '../Square/PaymentForm';
+import './square.css'
 
 const Square = ({ paymentForm, totalAmount }) => {
 
     paymentForm = new paymentForm(config);
     paymentForm.build();
-    const requestCardNonce = () =>{
+    const requestCardNonce = () => {
         paymentForm.requestCardNonce();
     }
 

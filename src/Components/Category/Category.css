@@ -9,16 +9,33 @@
 }
 
 .itemTitle {
-    font-size: 24px;
+    font-size: clamp(24px, 2vw, 2.2rem);
+}
+
+.filterText {
+    text-transform: capitalize;
+}
+
+.filterText:hover {
+    cursor: pointer;
+}
+
+.filterTitle {
+    font-size: clamp(16px 1.25vw, 1.5rem);
+    color: #C39303;
 }
 
 .itemImg {
-    width: 350px;
-    height: 350px;
+    width: 100%;
+    height: 90%;
 }
 
 .item:hover {
     opacity: 0.7;
     cursor: pointer;
-    margin-top: 10px;
+}
+
+.selected::before {
+    content: "- ";
+    color:#C39303;
 }

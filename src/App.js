@@ -12,6 +12,7 @@ import ContactUs from './Components/ContactUs/ContactUs'
 import Shop from './Components/Shop/Shop';
 
 import ShopProvider from './shopContext'
+import ApiContext from './ApiContext'
 import Cart from './Components/Cart/Cart';
 import Checkout from './Components/Checkout/Checkout';
 import Square from './Components/Square/Square';
@@ -20,14 +21,18 @@ import SchedulePt from './Components/SchedulePt/SchedulePt';
 import Schedule1on1 from './Components/Schedule1on1/Schedule1on1';
 import Category from './Components/Category/Category';
 import Product from './Components/Product/Product';
+import ShopHelper from './Helpers/shopHelper'
+import ShopSandbox from './Components/Shop/ShopSandbox';
+import Success from './Components/Checkout/Success';
 
 export default class App extends Component {
 
   state = {
-    load: false
+    load: false,
+    products: [],
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     let sqPaymentScript = document.createElement("script");
     // sandbox: https://js.squareupsandbox.com/v2/paymentform
     // production: https://js.squareup.com/v2/paymentform
@@ -40,11 +45,18 @@ export default class App extends Component {
       })
     };
     document.getElementsByTagName("head")[0].appendChild(sqPaymentScript);
+    let products = await ShopHelper.getAllProducts();
+    this.setState({
+      products: products
+    })
   }
 
   squarePayment = this.state.load ? ( <Square paymentForm={ window.SqPaymentForm }/> ) : ( null ) 
   
   render(){
+    const value = {
+      products: this.state.products,
+    };
     return (
       <div className="App">
         <ShopProvider>
@@ -64,11 +76,13 @@ export default class App extends Component {
             <Route exact path='/services/schedule-pt' component={SchedulePt}/>
             <Route exact path='/services/schedule-one-on-one' component={Schedule1on1}/>
             <Route exact path='/shop' component={Shop} />
+            <Route exact path='/shopSandbox' component={ShopSandbox} />
             <Route exact path='/shop/:category' component={Category} />
             <Route exact path='/shop/product/:id' component={Product} />
             <Route exact path='/cart' component={Cart} />
             <Route exact path='/contact' component={ContactUs} />
-            <Route exact path='/checkout' component={Checkout}/>
+            <Route exact path='/checkout' render={(props) => <Checkout {...props} />} />
+            <Route exact path='/success/:receipt' component={Success} />
           </Switch> 
         </ShopProvider>
       </div>  
