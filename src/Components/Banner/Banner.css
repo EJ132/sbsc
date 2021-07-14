@@ -1,0 +1,27 @@
+.showBanner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  background-color: black;
+  padding: 26px;
+  border-bottom: 3px solid gold;
+}
+
+.showBanner .h3 {
+  color: white;
+  font-weight: bold;
+}
+
+.showBanner h1 {
+  color: white;
+}
+
+.showBanner h1:hover {
+  cursor: pointer;
+}
+
+.hideBanner {
+  display: none;
+}

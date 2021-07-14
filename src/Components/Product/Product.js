@@ -57,12 +57,14 @@ export default class Product extends Component {
         })
         console.log(results)
         return results.map((item, index) => {
-            return(
-                <Col key={index} className="item-hover" onClick={() => this.navigateTo(`/shop/product/${item.catalogItemObj.id}`)}>
-                    <Image src={item.catalogImageObj.imageData.url} className="product-extra-image text-center" />
-                    <h1 className="h3">{item.catalogItemObj.itemData.name}</h1>
-                </Col>
-            )
+            if(index < 2){
+                return(
+                    <Col key={index} className="item-hover" onClick={() => this.navigateTo(`/shop/product/${item.catalogItemObj.id}`)}>
+                        <Image src={item.catalogImageObj.imageData.url} className="product-extra-image text-center" />
+                        <h1 className="h3">{item.catalogItemObj.itemData.name}</h1>
+                    </Col>
+                )
+            }
         })
     }
 

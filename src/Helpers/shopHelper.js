@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const ShopHelper = {
-    getAllProducts: async function() {
+    getAllProducts: async function () {
         let res = await axios({
             method: 'GET',
             url: 'http://localhost:3001'
@@ -10,8 +10,8 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res;
     },
-    getCart: async function() {
-        if(localStorage.getItem('checkout-id')){
+    getCart: async function () {
+        if (localStorage.getItem('checkout-id')) {
             let checkoutId = localStorage.getItem('checkout-id')
             let res = await axios({
                 method: 'POST',
@@ -28,7 +28,7 @@ const ShopHelper = {
             return []
         }
     },
-    getCategories: async function() {
+    getCategories: async function () {
         let res = await axios({
             method: 'GET',
             validateStatus: (status) => {
@@ -41,7 +41,7 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res;
     },
-    getMens: async function() {
+    getMens: async function () {
         let res = await axios({
             method: 'GET',
             validateStatus: (status) => {
@@ -54,7 +54,7 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res;
     },
-    getImages: async function() {
+    getImages: async function () {
         let res = await axios({
             method: 'GET',
             validateStatus: (status) => {
@@ -67,7 +67,7 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res;
     },
-    setOrderAddress: async function(orderId, data) {
+    setOrderAddress: async function (orderId, data) {
         let res = await axios({
             method: 'POST',
             validateStatus: (status) => {
@@ -84,7 +84,7 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res;
     },
-    retrieveOrder: async function(paymentId) {
+    retrieveOrder: async function (paymentId) {
         let res = await axios({
             method: 'POST',
             url: 'http://localhost:3001/payment/retrieve-payment',
@@ -97,7 +97,7 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res
     },
-    verifyAddress: async function(addressDetails) {
+    verifyAddress: async function (addressDetails) {
         let res = await axios({
             method: 'POST',
             url: 'http://localhost:3001/checkout/verify-address',
@@ -110,7 +110,61 @@ const ShopHelper = {
         }).catch(err => console.log(err))
         return res
     },
-    clearCart: function(){
+    getShippingRates: async function (addressDetails) {
+        let res = await axios({
+            method: 'POST',
+            url: 'http://localhost:3001/checkout/get-shipping-rates',
+            data: {
+                addressDetails: addressDetails
+            }
+        }).then((response) => {
+            console.log(response)
+            return response.data.data
+        }).catch(err => console.log(err))
+        return res
+    },
+    getShippingRateDetails: async function (id) {
+        let res = await axios({
+            method: 'POST',
+            url: `http://localhost:3001/checkout/get-shipping-rates/${id}`,
+            data: {
+                id: id
+            }
+        }).then((response) => {
+            console.log(response)
+            return response.data.data
+        }).catch(err => console.log(err))
+        return res
+    },
+    setShipping: async function (shippingId, rateId) {
+        let res = await axios({
+            method: 'POST',
+            url: `http://localhost:3001/checkout/set-shipping`,
+            data: {
+                shippingId,
+                rateId
+            }
+        }).then((response) => {
+            console.log(response)
+            return response.data.data
+        }).catch(err => console.log(err))
+        return res
+    },
+    squareSetShippingCost: async function (checkoutId) {
+        let res = await axios({
+            method: 'POST',
+            url: `http://localhost:3001/checkout/update-shipping-fees`,
+            data: {
+                checkoutId,
+                version: localStorage.getItem('checkout-version')
+            }
+        }).then((response) => {
+            console.log(response)
+            return response.data.data
+        }).catch(err => console.log(err))
+        return res
+    },
+    clearCart: function () {
         localStorage.removeItem('checkout-id')
         console.log('Cart Cleared!')
     },

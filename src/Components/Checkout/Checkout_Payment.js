@@ -1,20 +1,21 @@
 import react, { Component } from 'react';
-import {Container, Row, Col, Image, Button, Form, ToggleButton} from 'react-bootstrap'
+import { Container, Row, Col, Image, Button, Form, ToggleButton } from 'react-bootstrap'
 import Square from '../../Components/Square/Square';
 
 export default class Checkout_Payment extends Component {
 
-    render(){
+    render() {
         return (
             <Container className="py-5">
                 <Row className="my-3">
-                    <Col><h1 className="text-center checkout-title nonActive">1. Shipping</h1></Col>
+                    <Col><h1 className="text-center checkout-title nonActive">1. Information</h1></Col>
                     {/* <Col xs={1} md={1} lg={1} className="circle-seperator">{String.fromCharCode(9675)}</Col> */}
                     {/* <Col xs={1} md={1} lg={1} className="circle-seperator">{String.fromCharCode(9675)}</Col> */}
+                    {/* <Col><h1 className="text-center checkout-title nonActive">2. Shipping</h1></Col> */}
                     <Col><h1 className="text-center checkout-title active">2. Payment</h1></Col>
                 </Row>
                 <Row>
-                    <Square paymentForm={ window.SqPaymentForm } totalAmount={this.props.totalAmount}/>
+                    <Square paymentForm={window.SqPaymentForm} shipping={this.props.shipping} totalAmount={this.props.totalAmount} />
                 </Row>
                 {/* <div id="form-container">
                     <div id="sq-card-number"></div>

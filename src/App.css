@@ -3,6 +3,7 @@
   background-color: black;
   min-height: 100vh;
   color: white;
+  position: relative;
 }
 
 .container-fluid {
@@ -171,8 +172,8 @@
 }
 
 .btn-info {
-  background-color: #C19100 !important;
-  border: 1px solid #C19100 !important;
+  background-color: #c19100 !important;
+  border: 1px solid #c19100 !important;
   box-shadow: none !important;
   color: white !important;
 }
